@@ -1,0 +1,56 @@
+<div class="mb-[100px]">
+<div class="card rounded-lg border border-[#1F2A37] my-4 product-card" *ngFor="let product of product; let ind = index" [attr.data-id]="product.id">
+    <div class="product-image-wrap relative">
+        <img src="../{{ product.variants[0].image }}" alt="Product Image" class="rounded-t-lg product-image">
+        <div class="absolute top-2 left-2 badges-wrapper flex gap-2">
+            <div class="badge bg-[#84E1BC] text-[#014737] rounded-full px-2 py-1 text-xs leading-1 capitalize" *ngFor="let tag of product.tags">
+                {{ tag }}
+            </div>
+            <div class="discount-tag bg-[#FEECDC] text-[#8A2C0D] rounded-full px-2 py-1 text-xs leading-1" 
+            [ngClass]="{'hidden': !product.variants[0].reducedPrice}">
+                
+            </div>
+        </div>
+    </div>
+    <div class="product-info p-4 pt-6 bg-[#1f2a37] rounded-b-lg text-white">
+        <h2 class="text-lg font-bold mb-3">{{ product.title }}</h2>
+        <p class="text-sm">{{ product.description }}</p>
+        <div class="variants flex items-center my-3">
+            <div class="variant-color w-8 h-8 rounded-full mr-4 cursor-pointer" 
+            [style.backgroundColor]="variant.color" 
+            *ngFor="let variant of product.variants; let i = index"
+            [ngClass]="{'selected': i === 0}"
+            [attr.data-index]="i"
+            [attr.data-image]="variant.image"
+            [attr.data-originalPrice]="variant.price"
+            [attr.data-salePrice]="variant.reducedPrice"
+            [attr.data-id]="product.id"
+            [attr.data-sku]="variant.sku"
+            (click)="selectVariant($event)"
+            ></div>
+        </div>
+        <div class="flex price-wish-wrap justify-between items-center">
+            <div class="product-price-wrap flex items-center gap-2">
+                <div class="original-price" [ngClass]="{'line-through': product.variants[0].reducedPrice}">€{{ product.variants[0].price }}</div>
+                <div class="sale-price" [ngClass]="{'hidden': !product.variants[0].reducedPrice}">€{{ product.variants[0].reducedPrice }}</div>
+            </div>
+            
+            <form class="add-to-wishlist-form" (ngSubmit)="wishlistProductsComponent.toggleWishlist($event, product, product.variants[0].sku)" [ngClass]="{'wishlist-added': product.variants[0].wishlist}">
+                <button type="submit" class="add-to-wishlist-button" [attr.data-sku]="product.variants[0].sku">
+                    <svg width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 8C0.5 3.85786 3.85786 0.5 8 0.5H52C56.1421 0.5 59.5 3.85786 59.5 8V32C59.5 36.1421 56.1421 39.5 52 39.5H8C3.85786 39.5 0.5 36.1421 0.5 32V8Z" stroke="white"/>
+                      <g clip-path="url(#clip0_10_169)">
+                        <path d="M39.8059 15.1757C39.2781 13.1713 37.7249 11.5916 35.7551 11.0549C33.8254 10.5314 31.7754 11.063 30.0099 12.5184C28.7221 11.448 27.295 10.8685 25.838 10.8339C24.2547 10.8115 22.7776 11.4012 21.664 12.5327C19.57 14.6624 19.1134 18.5081 22.2899 21.7388L29.2999 28.8682C29.4952 29.0668 29.7515 29.1666 30.0079 29.1666C30.2643 29.1666 30.5206 29.0668 30.7159 28.8682L37.7259 21.7388C39.6346 19.7975 40.3927 17.4051 39.8059 15.1757Z" fill="white"/>
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_10_169">
+                          <rect width="20" height="20" fill="white" transform="translate(20 10)"/>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </button>
+                </form>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,8 @@
+.selected {
+  border-color: white;
+  border-width: 2px;
+}
+
+.wishlist-added svg {
+    fill: red;
+}

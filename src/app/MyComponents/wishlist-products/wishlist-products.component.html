@@ -1,0 +1,49 @@
+<div class="wishlist-products-wrapper bg-[#C3DDFD] h-[80px] w-full fixed bottom-0 left-0 z-[9999] rounded-t-2xl p-4 pt-0" [class.open]="isOpen">
+    <div class="wishlist-products-container pt-6">
+        <div class="wishlist-products-title-wrapper flex items-center justify-between mb-8" (click)="toggleWishlistStatus()">
+            <div class="wishlist-title-wrap flex gap-4 items-center">
+                <div class="wishlist-title font-bold text-lg">Knoll</div>
+                <div class="wishlist-products-count rounded-full bg-[red] p-1 px-3 text-[white]">{{ (wishlistProducts$ | async)?.length }}</div>
+            </div>
+            <div class="wishlist-logo">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_19_635)">
+                    <path d="M19.8059 5.17567C19.2781 3.17129 17.7249 1.59162 15.7551 1.05488C13.8254 0.531378 11.7754 1.06303 10.0099 2.51844C8.72208 1.44801 7.29504 0.868496 5.83796 0.833868C4.2547 0.811461 2.7776 1.40116 1.66401 2.5327C-0.429979 4.66235 -0.88663 8.50815 2.2899 11.7388L9.2999 18.8682C9.49518 19.0668 9.75154 19.1666 10.0079 19.1666C10.2643 19.1666 10.5206 19.0668 10.7159 18.8682L17.7259 11.7388C19.6346 9.79755 20.3927 7.40513 19.8059 5.17567Z" fill="white"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_19_635">
+                    <rect width="20" height="20" fill="white"/>
+                    </clipPath>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="wishlist-products-list">
+        <div class="wishlist-product flex justify-between items-center" *ngFor="let product of wishlistProducts$ | async" [attr.data-id]="product.id">
+            <div class="product-info-wrap flex items-center gap-2">
+                <img [src]="product.variants[0].image" alt="{{ product.title }}" class="wishlist-product-image w-16 h-16">
+                <div class="wishlist-product-info">
+                    <div class="wishlist-product-title font-bold">{{ product.title }}</div>
+                    <div class="wishlist-product-variant">{{ product.variants[0].label }}</div>
+                </div>
+            </div>
+            <div class="product-price-and-delete flex items-center gap-2">
+                <div class="wishlist-product-price">
+                    <span *ngIf="product.variants[0].reducedPrice; else originalPrice">€{{ product.variants[0].reducedPrice }}</span>
+                    <ng-template #originalPrice>€{{ product.variants[0].price }}</ng-template>
+                </div>
+                
+                <button class="wishlist-product-delete" (click)="toggleWishlist($event, product, product.variants[0].sku)" [attr.data-id]="product.id">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14.5185 3.36842H11.2592V1.68421C11.2592 1.23753 11.0875 0.809144 10.7819 0.493294C10.4763 0.177443 10.0618 0 9.62959 0H6.37033C5.93813 0 5.52362 0.177443 5.21801 0.493294C4.91239 0.809144 4.7407 1.23753 4.7407 1.68421V3.36842H1.48144C1.26534 3.36842 1.05809 3.45714 0.90528 3.61507C0.752472 3.77299 0.666626 3.98719 0.666626 4.21053C0.666626 4.43387 0.752472 4.64806 0.90528 4.80598C1.05809 4.96391 1.26534 5.05263 1.48144 5.05263H2.29626V14.3158C2.29626 14.7625 2.46795 15.1909 2.77356 15.5067C3.07918 15.8226 3.49368 16 3.92589 16H12.074C12.5062 16 12.9207 15.8226 13.2264 15.5067C13.532 15.1909 13.7037 14.7625 13.7037 14.3158V5.05263H14.5185C14.7346 5.05263 14.9418 4.96391 15.0946 4.80598C15.2474 4.64806 15.3333 4.43387 15.3333 4.21053C15.3333 3.98719 15.2474 3.77299 15.0946 3.61507C14.9418 3.45714 14.7346 3.36842 14.5185 3.36842ZM6.37033 1.68421H9.62959V3.36842H6.37033V1.68421ZM12.074 14.3158H3.92589V5.05263H12.074V14.3158Z" fill="#838383"/>
+                        <path d="M6.37033 5.89474C6.15423 5.89474 5.94698 5.98346 5.79417 6.14138C5.64136 6.29931 5.55551 6.5135 5.55551 6.73684V12.6316C5.55551 12.8549 5.64136 13.0691 5.79417 13.227C5.94698 13.385 6.15423 13.4737 6.37033 13.4737C6.58643 13.4737 6.79368 13.385 6.94649 13.227C7.0993 13.0691 7.18514 12.8549 7.18514 12.6316V6.73684C7.18514 6.5135 7.0993 6.29931 6.94649 6.14138C6.79368 5.98346 6.58643 5.89474 6.37033 5.89474Z" fill="#838383"/>
+                        <path d="M9.62959 5.89474C9.41349 5.89474 9.20623 5.98346 9.05343 6.14138C8.90062 6.29931 8.81477 6.5135 8.81477 6.73684V12.6316C8.81477 12.8549 8.90062 13.0691 9.05343 13.227C9.20623 13.385 9.41349 13.4737 9.62959 13.4737C9.84569 13.4737 10.0529 13.385 10.2057 13.227C10.3586 13.0691 10.4444 12.8549 10.4444 12.6316V6.73684C10.4444 6.5135 10.3586 6.29931 10.2057 6.14138C10.0529 5.98346 9.84569 5.89474 9.62959 5.89474Z" fill="#838383"/>
+                    </svg>                        
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" *ngIf="isOpen" (click)="toggleWishlistStatus()"></div>
